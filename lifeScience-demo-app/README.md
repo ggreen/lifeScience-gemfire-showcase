@@ -3,47 +3,65 @@
 The following project provides coding example for basic GemFire client API features, along with Spring Data GemFire in Spring Boot Applications.
 
 
-	create lucene index --region=/PatientVisit --name=notesIndex --field=notes 
+Connect thru gfsh
 
-	create region --name=PatientVisit --type=PARTITION
+	gfsh>connect --locator=localhost[10000]
+	
+SetUp
 
+	gfsh>create lucene index --region=/PatientVisit --name=notesIndex --field=notes 
 
-http://localhost:8080/create
+	gfsh>create region --name=PatientVisit --type=PARTITION
 
-{
-   "id": "test01",
-   "visitName": "Annual-checkup",
-  "location": "Hospital",
-  "status": "STARTED"
-}
+Start Spring App
 
-query --query="select * from /PatientVisit"
+	java -jar target/lifeScience-demo-app-0.0.1-SNAPSHOT.jar
+ 
+ **Create Data with REST endpoints**
 
-{
-   "id": "test02",
-   "visitName": "Annual-checkup",
-  "location": "Hospital",
-  "status": "STARTED",
-  "patient": 
-   { 
-      "id" : "01",
-      "name" : "Nyla"
-   }
-}
+	http://localhost:8080/create
 
-query --query="select id, patient from /PatientVisit"
-query --query="select id, patient from /PatientVisit" order by id
+	{
+	   "id": "test01",
+	   "visitName": "Annual-checkup",
+	  "location": "Hospital",
+	  "status": "STARTED"
+	}
 
-** Update Records
+**Query in gfsh**
 
-http://localhost:8080/savePatientVisit
+	gfsh>query --query="select * from /PatientVisit"
 
-{
-   "id": "test01",
-   "visitName": "Annual-checkup",
-  "location": "Hospital",
-  "status": "IN-PROGRESS"
-}
+**Create Data with REST endpoints**
+	
+	http://localhost:8080/create
+
+	{
+	   "id": "test02",
+	   "visitName": "Annual-checkup",
+	  "location": "Hospital",
+	  "status": "STARTED",
+	  "patient": 
+	   { 
+	      "id" : "01",
+	      "name" : "Nyla"
+	   }
+	}
+**Query in gfsh**
+
+	query --query="select id, patient from /PatientVisit"
+	query --query="select id, patient from /PatientVisit order by id"
+
+**Update Records**
+
+	http://localhost:8080/savePatientVisit
+	
+	{
+	   "id": "test01",
+	   "visitName": "Annual-checkup",
+	  "location": "Hospital",
+	  "status": "IN-PROGRESS"
+	}
 
 query --query="select * from /PatientVisit"
 
@@ -52,9 +70,9 @@ query --query="select * from /PatientVisit"
 
 http://localhost:8080/select
 
-select * from /PatientVisit where status != 'IN-PROGRESS'
+	select * from /PatientVisit where status != 'IN-PROGRESS'
 
-**Events/Continous Queries**
+**Events/Continuous Queries**
 
 http://localhost:8080/savePatientVisit
 
@@ -86,7 +104,20 @@ http://localhost:8080/create
 
 **Text based search**
 
-search lucene --name=notesIndex --region=/PatientVisit --queryString="pivotal" --defaultField=notes
+gfsh>search lucene --name=notesIndex --region=/PatientVisit --queryString="pivotal" --defaultField=notes
+
+
+Pulse
+
+- http://localhost:17070/pulse
+
+select * from /PatientVisit 
+
+
+Start Another data node
+
+rm -rf /opt/pivotal/runtime/work/server2/*
+./startDataNode.sh 2
 
 
 

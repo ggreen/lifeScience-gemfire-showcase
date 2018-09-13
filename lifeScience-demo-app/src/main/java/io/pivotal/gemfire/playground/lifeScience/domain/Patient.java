@@ -2,6 +2,10 @@ package io.pivotal.gemfire.playground.lifeScience.domain;
 
 public class Patient  
 {
+	private String id;
+	private String name;
+	
+	
 	/**
 	 * @return the id
 	 */
@@ -30,6 +34,5 @@ public class Patient
 	{
 		this.name = name;
 	}
-	private String id;
-	private String name;
+
 }

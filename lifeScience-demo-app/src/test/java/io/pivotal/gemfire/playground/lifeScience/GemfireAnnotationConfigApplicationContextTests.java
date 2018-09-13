@@ -5,6 +5,7 @@ import org.apache.geode.cache.RegionShortcut;
 import org.apache.geode.cache.client.ClientCache;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.gemfire.GemfireTemplate;
@@ -27,6 +28,7 @@ import nyla.solutions.core.patterns.jmx.JMX;
  * @author Gregory Green
  *
  */
+@Ignore
 public class GemfireAnnotationConfigApplicationContextTests {
 	
 	/**

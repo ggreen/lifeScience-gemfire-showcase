@@ -14,9 +14,10 @@ public class PatientVisit
 	private String visitName;
 	private String status;
 	private String location;
-	private Patient patient;
 	private String notes;
 	
+	private Patient patient;
+
 	
 	/**
 	 * @return the status
