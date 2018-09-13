@@ -63,61 +63,59 @@ Start Spring App
 	  "status": "IN-PROGRESS"
 	}
 
-query --query="select * from /PatientVisit"
+**Query in gfsh**
+
+	query --query="select * from /PatientVisit"
 
 
 **Application Based Queries**
 
-http://localhost:8080/select
+	http://localhost:8080/select
 
+	POST Body
+	
 	select * from /PatientVisit where status != 'IN-PROGRESS'
 
 **Events/Continuous Queries**
 
-http://localhost:8080/savePatientVisit
-
-{
-   "id": "test01",
-   "visitName": "Annual-checkup",
-  "location": "Hospital",
-  "status": "COMPLETE"
-}
-
-
-http://localhost:8080/create
-
-{
-   "id": "test03",
-   "visitName": "Payment",
-  "location": "Hospital",
-  "status": "COMPLETE"
-}
+	POST http://localhost:8080/savePatientVisit
+	
+	{
+	   "id": "test01",
+	   "visitName": "Annual-checkup",
+	  "location": "Hospital",
+	  "status": "COMPLETE"
+	}
 
 
-{
-   "id": "test04",
-   "visitName": "Payment",
-  "location": "Hospital",
-  "status": "COMPLETE",
-  "notes" : "It was a beautiful day for a visit at pivotal"
-}
+	POST http://localhost:8080/create
+
+	{
+	   "id": "test03",
+	   "visitName": "Payment",
+	  "location": "Hospital",
+	  "status": "COMPLETE"
+	}
+
+
+	{
+	   "id": "test04",
+	   "visitName": "Payment",
+	  "location": "Hospital",
+	  "status": "COMPLETE",
+	  "notes" : "It was a beautiful day for a visit at pivotal"
+	}
 
 **Text based search**
 
-gfsh>search lucene --name=notesIndex --region=/PatientVisit --queryString="pivotal" --defaultField=notes
+	gfsh>search lucene --name=notesIndex --region=/PatientVisit --queryString="pivotal" --defaultField=notes
 
 
-Pulse
+Pulse**
 
-- http://localhost:17070/pulse
-
-select * from /PatientVisit 
+	http://localhost:17070/pulse
 
 
-Start Another data node
-
-rm -rf /opt/pivotal/runtime/work/server2/*
-./startDataNode.sh 2
 
 
 
