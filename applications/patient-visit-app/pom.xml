@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.pivotal..gemfire.playground</groupId>
-	<artifactId>lifeScience-demo-app</artifactId>
+	<artifactId>patient-visit-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>lifeScience-demo-app</name>
+	<name>patient-visit-app</name>
 	<description>Demo project for Spring Boot</description>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
