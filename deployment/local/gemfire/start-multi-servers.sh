@@ -25,5 +25,3 @@ $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --skip-if-exists=true --na
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --skip-if-exists=true --name=Paging --type=PARTITION  --eviction-entry-count=10000 --eviction-action=local-destroy --entry-time-to-live-expiration=3600 --enable-statistics=true"
 
 
-
-

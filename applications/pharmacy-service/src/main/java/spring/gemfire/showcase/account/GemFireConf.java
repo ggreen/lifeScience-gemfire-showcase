@@ -2,23 +2,40 @@ package spring.gemfire.showcase.account;
 
 import org.apache.geode.cache.DataPolicy;
 import org.apache.geode.cache.client.ClientCache;
+import org.apache.geode.cache.client.ClientCacheFactory;
+import org.apache.geode.cache.execute.FunctionService;
+import org.apache.geode.cache.execute.ResultCollector;
+import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
 import org.springframework.data.gemfire.config.annotation.EnableSecurity;
+import org.springframework.data.gemfire.function.config.EnableGemfireFunctionExecutions;
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
 import showcase.life.science.gemfire.pharmacy.pricing.domains.DrugPricingInfo;
 import showcase.life.science.gemfire.pharmacy.pricing.domains.PlanPricingRule;
+import showcase.life.science.gemfire.pharmacy.pricing.domains.PricingRequest;
+import showcase.life.science.gemfire.pharmacy.pricing.domains.PricingResult;
+import spring.gemfire.showcase.account.function.GetPricing;
+
+import java.util.List;
+import java.util.Set;
 
 @ClientCacheApplication
 //@EnableSecurity
 @Configuration
-@EnablePdx
+@EnablePdx(serializerBeanName = "serializer")
 @EnableGemfireRepositories
+@EnableGemfireFunctionExecutions(basePackageClasses = GetPricing.class)
 public class GemFireConf
 {
+    @Bean("serializer")
+    ReflectionBasedAutoSerializer serializer()
+    {
+        return new ReflectionBasedAutoSerializer(".*");
+    }
     @Bean("DrugPricingInfo")
             ClientRegionFactoryBean<String, DrugPricingInfo> drugPricingInfo (ClientCache gemFireCache)
     {
@@ -35,5 +52,24 @@ public class GemFireConf
         factory.setCache(gemFireCache);
         factory.setDataPolicy(DataPolicy.EMPTY);
         return factory;
+    }
+
+    @Bean
+    GetPricing getPricing()
+    {
+        return request -> {
+
+            ResultCollector<PricingRequest, List<PricingResult>> results = FunctionService.onRegion(ClientCacheFactory.getAnyInstance().getRegion("DrugPricingInfo"))
+                    .setArguments(request)
+                    .withFilter(Set.of(request.getNdc()))
+                    .execute("getPricing");
+
+            var responses = results.getResult();
+
+            if(responses == null || responses.isEmpty())
+                return null;
+
+            return results.getResult().iterator().next();
+        };
     }
 }

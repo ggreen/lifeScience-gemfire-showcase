@@ -1,17 +1,15 @@
 package spring.gemfire.showcase.account.controller;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import showcase.life.science.gemfire.pharmacy.pricing.domains.*;
 import spring.gemfire.showcase.account.function.GetPricing;
 import spring.gemfire.showcase.account.repostories.DrugPricingInfoRepository;
 import spring.gemfire.showcase.account.repostories.PlanPricingRuleRepository;
 
-import java.util.Collections;
-import java.util.Set;
-
+/**
+ * REST Service for pharmacy drug data
+ * @author gregory green
+ */
 @RestController
 @RequestMapping("pharmacy")
 public class PharmacyController {
@@ -28,11 +26,19 @@ public class PharmacyController {
         this.getPricingFunction = getPricingFunction;
     }
 
+    /**
+     * Save the drug pricing
+     * @param drugPricingInfo the drug pricing
+     */
     @PostMapping("drug/pricing/info")
     public void saveDrugPricingInfo(@RequestBody DrugPricingInfo drugPricingInfo) {
         drugPricingInfoRepository.save(drugPricingInfo);
     }
 
+    /**
+     * Save the plan pricing details
+     * @param planPricing the plan pricing details
+     */
     @PostMapping("plan/pricing")
     public void savePlanPricing(@RequestBody PlanPricing planPricing) {
 
@@ -40,8 +46,14 @@ public class PharmacyController {
         planPricingRuleRepository.save(rule);
     }
 
-    @GetMapping("pricing")
-    public PricingResult getPricing(@RequestBody PricingRequest request) {
-        return getPricingFunction.get(request, Set.of(request.getNdc()));
+    /**
+     * Get Pricing details
+     * @param ndc the drud Id
+     * @param planId the planId
+     * @return the pricing results
+     */
+    @GetMapping("pricing/{ndc}/{planId}")
+    public PricingResult getPricing(@PathVariable String ndc, @PathVariable String planId) {
+        return getPricingFunction.getPricing(new PricingRequest(ndc,planId));
     }
 }

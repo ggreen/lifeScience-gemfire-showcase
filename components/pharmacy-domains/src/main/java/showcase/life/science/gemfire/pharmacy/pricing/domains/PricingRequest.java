@@ -9,7 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PricingRequest {
+public class PricingRequest{
     private String ndc;
     private String planId;
+
+    public String toPlanRuleKey() {
+        return ndc+"|"+planId;
+    }
 }

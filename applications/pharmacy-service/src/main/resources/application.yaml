@@ -1,3 +1,10 @@
+#springdoc:
+#  swagger-ui:
+#    path: /swagger-ui.html
+#  writer-with-default-pretty-printer: true
+#  api-docs:
+#    enabled: true
+#    version: "openapi_3_0"
 server:
   port: 6001
 spring:
@@ -6,3 +13,6 @@ spring:
   data:
     gemfire:
       pool.default.locators: localhost[10334]
+#logging:
+#  level:
+#    root: DEBUG
