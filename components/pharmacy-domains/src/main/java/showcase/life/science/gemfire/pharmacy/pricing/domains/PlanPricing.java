@@ -12,8 +12,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DrugPricingInfo{
-    private String id; //ndc
-    private BigDecimal awp;
-    private String notes;
+public class PlanPricing {
+        private String planId; //planId
+        private String ndc;
+        private BigDecimal awpDiscount;      // e.g. 0.15 for 15% off AWP
+        private BigDecimal dispensingFee;    // e.g. $1.50
+        private BigDecimal copay;
+
 }

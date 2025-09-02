@@ -1,12 +1,15 @@
 package showcase.life.science.gemfire.pharmacy.pricing.domains;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public record PlanPricingRule(BigDecimal awpDiscount,      // e.g. 0.15 for 15% off AWP
-                              BigDecimal dispensingFee,    // e.g. $1.50
-                              BigDecimal copay    // e.g.
-) {
+public class PlanPricingRule{
+    private String id;
+    private PlanPricing planPricing;
 }
