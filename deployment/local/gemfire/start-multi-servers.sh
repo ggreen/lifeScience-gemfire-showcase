@@ -21,7 +21,12 @@ $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create lucene index --name=drugInfoNotes
 
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --skip-if-exists=true --name=example-search-region --type=PARTITION --enable-statistics=true"
 
+
+$GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --skip-if-exists=true --name=AffordableEvent --type=PARTITION_REDUNDANT_PERSISTENT"
+
 #Number of seconds for expiration = 1 hour
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "create region --skip-if-exists=true --name=Paging --type=PARTITION  --eviction-entry-count=10000 --eviction-action=local-destroy --entry-time-to-live-expiration=3600 --enable-statistics=true"
+
+
 
 

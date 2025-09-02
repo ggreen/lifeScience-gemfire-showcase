@@ -14,17 +14,20 @@ Start Cluster
 ./deployment/local/gemfire/start-multi-servers.sh
 ```
 
+Deploy Get Pricing Function
+
 ```shell
 $GEMFIRE_HOME/bin/gfsh -e "connect" -e "deploy --jar=$PWD/components/adjudication-pricing-function/target/adjudication-pricing-function-0.0.1-SNAPSHOT.jar" 
 ```
 
-Start Service App
+Start Service Spring App
 
 
 ```shell
 java -jar applications/pharmacy-service/target/pharmacy-service-0.0.1-SNAPSHOT.jar
 ```
 
+Open Spring Apps
 
 ```shell
 open http://localhost:6001
@@ -94,15 +97,6 @@ curl -X 'POST' \
 
 Add Pharmacy plan pricing
 
-```json
-{
-  "planId": "PLAN-A",
-  "ndc": "0001",
-  "awpDiscount": 0.20,
-  "dispensingFee": 1.50,
-  "copay": 10.00
-}
-```
 
 ```shell
 curl -X 'POST' \
@@ -121,17 +115,6 @@ curl -X 'POST' \
 
 Adding Plan
 
-```json
-{
-  "planId": "PLAN-B",
-  "ndc": "0001",
-  "awpDiscount": 0.15,
-  "dispensingFee": 1.00,
-  "copay": 20.00
-}
-```
-
-Adding Plan
 
 ```shell
 curl -X 'POST' \
@@ -170,7 +153,7 @@ curl -X 'POST' \
   -d '{
   "planId": "PLAN-IM",
   "ndc": "0003",
-  "awpDiscount": 1.25,
+  "awpDiscount": 0.37,
   "dispensingFee": 1.70,
   "copay": 57.00
 }'
@@ -216,6 +199,11 @@ List members
 list members
 ```
 
+List clients
+```shell
+list clients
+```
+
 Query Data in gfsh
 
 ```gfsh
@@ -252,6 +240,9 @@ planId="PLAN-B"
 
 ```shell
 curl  -X 'GET' \
+  'http://localhost:6001/pharmacy/pricing/0002/PLAN-IM' \
+  -H 'accept: */*'
+  curl  -X 'GET' \
   'http://localhost:6001/pharmacy/pricing/0002/PLAN-IM' \
   -H 'accept: */*'
 ```
@@ -322,6 +313,33 @@ where  planPricing.copay < 100
 group by planPricing.planId 
 ```
 
+-- 
+
+Continuous Query
+
+```shell
+curl -X 'POST' \
+  'http://localhost:6001/pharmacy/plan/pricing' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "planId": "PLAN-NICE",
+  "ndc": "0001",
+  "awpDiscount": 0.55,
+  "dispensingFee": 1.00,
+  "copay": 1.00
+}'
+```
+
+
+Gfsh/GMC query
+
+```shell
+select * from AffordableEvent
+```
+
+
+---
 
 ## Resiliency
 
@@ -396,3 +414,8 @@ Start Server 3
 cd $GEMFIRE_HOME/bin
 $GEMFIRE_HOME/bin/gfsh -e "start server --name=lfserver3 --max-heap=500m --initial-heap=500m --locators=localhost[10334] --server-port=1882 --J=-Dgemfire.prometheus.metrics.emission=Default --J=-Dgemfire.prometheus.metrics.port=7799 --J=-Dgemfire.prometheus.metrics.host=localhost --J=-Dgemfire.prometheus.metrics.interval=15s --bind-address=127.0.0.1  --http-service-port=8592  --J=-Dgemfire.enable-statistics=true --J=-Dgemfire.-–statistic-archive-file=lfserver3.gfs --J=-Dgemfire.enable-time-statistics=true"
 ```
+
+
+
+---
+

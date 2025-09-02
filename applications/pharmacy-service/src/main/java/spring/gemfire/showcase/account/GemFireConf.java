@@ -14,16 +14,13 @@ import org.springframework.data.gemfire.config.annotation.EnablePdx;
 import org.springframework.data.gemfire.config.annotation.EnableSecurity;
 import org.springframework.data.gemfire.function.config.EnableGemfireFunctionExecutions;
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
-import showcase.life.science.gemfire.pharmacy.pricing.domains.DrugPricingInfo;
-import showcase.life.science.gemfire.pharmacy.pricing.domains.PlanPricingRule;
-import showcase.life.science.gemfire.pharmacy.pricing.domains.PricingRequest;
-import showcase.life.science.gemfire.pharmacy.pricing.domains.PricingResult;
+import showcase.life.science.gemfire.pharmacy.pricing.domains.*;
 import spring.gemfire.showcase.account.function.GetPricing;
 
 import java.util.List;
 import java.util.Set;
 
-@ClientCacheApplication
+@ClientCacheApplication(subscriptionEnabled = true)
 //@EnableSecurity
 @Configuration
 @EnablePdx(serializerBeanName = "serializer")
@@ -49,6 +46,16 @@ public class GemFireConf
     ClientRegionFactoryBean<String, PlanPricingRule> planPricingRule (ClientCache gemFireCache)
     {
         var factory = new ClientRegionFactoryBean<String, PlanPricingRule>();
+        factory.setCache(gemFireCache);
+        factory.setDataPolicy(DataPolicy.EMPTY);
+        return factory;
+    }
+
+    //
+    @Bean("AffordableEvent")
+    ClientRegionFactoryBean<String, AffordableEvent> affordableEvent (ClientCache gemFireCache)
+    {
+        var factory = new ClientRegionFactoryBean<String, AffordableEvent>();
         factory.setCache(gemFireCache);
         factory.setDataPolicy(DataPolicy.EMPTY);
         return factory;
