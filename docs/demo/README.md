@@ -214,7 +214,7 @@ query --query="select * from /DrugPricingInfo"
 ```
 
 ```gfsh
-query --query="select * from /PlanPricingRule"
+query --query="select * from /PlanPricingRule" 
 ```
 
 
