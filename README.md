@@ -25,12 +25,6 @@ See [Instructions for demos](docs/demo/README.md)
 
 Set up Maven Repository user credentials See https://gemfire.dev/quickstart/java/
 
-```shell
-export BROADCOM_MAVEN_USERNAME=....
-export BROADCOM_GEMFIRE_MAVEN_PASSWORD=...
-```
-
-
 ---
 
 # GemFire Resources 
