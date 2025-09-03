@@ -1,0 +1,18 @@
+#springdoc:
+#  swagger-ui:
+#    path: /swagger-ui.html
+#  writer-with-default-pretty-printer: true
+#  api-docs:
+#    enabled: true
+#    version: "openapi_3_0"
+server:
+  port: -1
+spring:
+  application:
+    name: pharmacy-listener
+  data:
+    gemfire:
+      pool.default.locators: localhost[10334]
+#logging:
+#  level:
+#    root: DEBUG

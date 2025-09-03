@@ -13,6 +13,7 @@
         <module>components/pharmacy-domains</module>
         <module>components/adjudication-pricing-function</module>
         <module>applications/pharmacy-service</module>
+        <module>applications/pharmacy-listener</module>
     </modules>
     <build>
         <pluginManagement>

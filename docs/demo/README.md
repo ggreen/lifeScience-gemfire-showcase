@@ -1,5 +1,8 @@
 # Demo
 
+![ref-arch.png](img/ref-arch.png)
+
+
 ## Pre-steps
 
 - Start GemFire Console
@@ -37,7 +40,7 @@ Get Pricing - empty results
 
 ```properties
 ndc=0001
-planId=Plan-A
+planId=PLAN-A
 ```
 
 ```shell
@@ -242,14 +245,19 @@ planId="PLAN-B"
 curl  -X 'GET' \
   'http://localhost:6001/pharmacy/pricing/0002/PLAN-IM' \
   -H 'accept: */*'
-  curl  -X 'GET' \
-  'http://localhost:6001/pharmacy/pricing/0002/PLAN-IM' \
-  -H 'accept: */*'
+
 ```
 
 ```shell
 curl  -X 'GET' \
   'http://localhost:6001/pharmacy/pricing/0001/PLAN-B' \
+  -H 'accept: */*'
+```
+
+
+```shell
+curl  -X 'GET' \
+  'http://localhost:6001/pharmacy/pricing/0001/PLAN-A' \
   -H 'accept: */*'
 ```
 
@@ -315,7 +323,16 @@ group by planPricing.planId
 
 -- 
 
-Continuous Query
+## Continuous Query
+
+Start Listener
+
+```shell
+java -jar applications/pharmacy-listener/target/pharmacy-listener-0.0.1-SNAPSHOT.jar
+```
+
+
+Post Matching Data with CQ
 
 ```shell
 curl -X 'POST' \
@@ -335,9 +352,12 @@ curl -X 'POST' \
 Gfsh/GMC query
 
 ```shell
-select * from AffordableEvent
+select * from /AffordableEvent
 ```
 
+```gfsh
+list clients
+```
 
 ---
 
@@ -352,7 +372,7 @@ Kill Cache Server 1
 
 Test
 
--  View Server  List in GMC or gfsh
+- View Server  List in GMC or gfsh
 - Select data in GMC/gfsh
 
 Start Back server 1
@@ -377,7 +397,7 @@ Kill Cache Server 2
 
 Test
 
-- View Server  List in GMC or gfsh
+- View Server list in GMC or gfsh
 - Select data in GMC/gfsh
 
 
